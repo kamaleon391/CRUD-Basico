@@ -4,7 +4,7 @@ namespace sisVentas\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use sisVentas\Http\Request;
+use sisVentas\Http\Requests;
 use sisVentas\Categoria;
 use Illuminate\Support\Facades\Redirect;
 use sisVentas\Http\Requests\CategoriaFormRequest;
@@ -23,9 +23,9 @@ class CategoriaController extends Controller
     	{
     		$query =trim($request->get('searchText'));
     		$categorias=DB::table('categoria')->where('nombre','LIKE','%'.$query.'%')
-    		->where ('condition','=','1')
-    		orderBy('idcategoria','desc')
-    		paginate(7);
+    		->where ('condicion','=','1')
+    		->orderBy('idcategoria','desc')
+    		->paginate(7);
     		return view('almacen.categoria.index',["categorias"=>$categorias,"searchText"=>$query]);
     	}
     }
