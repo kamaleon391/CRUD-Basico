@@ -31,18 +31,18 @@ class IngresoController extends Controller
       $ingresos = DB::table('ingreso as i')
         ->join('persona as p', 'i.idproveedor','=','p.idpersona')
         ->join('detalle_ingreso as di','i.idingreso','=','di.idingreso')
-        ->select('i.ingreso','i.fecha_hora','p.nombre','i.tipo_comprobante','i.serie_comprobante','i.impuesto','i.estado',DB::raw('sum(di.cantidad*precio_compra) as total'))
+        ->select('i.idingreso','i.fecha_hora','p.nombre','i.tipo_comprobante','i.serie_comprobante','i.impuesto','i.estado',DB::raw('sum(di.cantidad*precio_compra) as total'))
         ->where('i.num_comprobante','LIKE','%'.$query.'%')
         ->orderBy('i.idingreso','desc')
-        ->groupBy('i.ingreso','i.fecha_hora','p.nombre','i.tipo_comprobante','i.serie_comprobante','i.impuesto','i.estado')
+        ->groupBy('i.idingreso','i.fecha_hora','p.nombre','i.tipo_comprobante','i.serie_comprobante','i.impuesto','i.estado')
         ->paginate(7);
-      return view('compras.ingreso.index',["ingresos"=>$ingresos,"searchText"=$query]);
+      return view('compras.ingreso.index',["ingresos"=>$ingresos,"searchText"=>$query]);
     }
   }
 
   public function create()
   {
-    $persnas = DB::table('persona')->where('tipo_persona','=','Proveedor')->get();
+    $personas = DB::table('persona')->where('tipo_persona','=','Proveedor')->get();
     $articulos = DB::table('articulo as art')
       ->select(DB::raw('CONCAT(art.codigo, " ",art.nombre) AS articulo'), 'art.idarticulo')
       ->where('art.estado','=','Activo')
@@ -62,7 +62,7 @@ class IngresoController extends Controller
 
       $mytime = Carbon::now('America/Mexico_City');
       $ingreso->fecha_hora=$mytime->toDateTimeString();
-      $ingreso->impuesto='18';
+      $ingreso->impuesto='16';
       $ingreso->estado='A';
       $ingreso->save();
 
@@ -96,14 +96,14 @@ class IngresoController extends Controller
     $ingreso = DB::table('ingreso as i')
       ->join('persona as p', 'i.idproveedor','=','p.idpersona')
       ->join('detalle_ingreso as di','i.idingreso','=','di.idingreso')
-      ->select('i.ingreso','i.fecha_hora','p.nombre','i.tipo_comprobante','i.serie_comprobante','i.impuesto','i.estado',DB::raw('sum(di.cantidad*precio_compra) as total'))
-      ->where('i.idingreso','=',$id);
+      ->select('i.idingreso','i.fecha_hora','p.nombre','i.tipo_comprobante','i.serie_comprobante','i.impuesto','i.estado',DB::raw('sum(di.cantidad*precio_compra) as total'))
+      ->where('i.idingreso','=',$id)
       ->first();
 
     $detalles = DB::table('detalle_ingreso as d')
       ->join('articulo as a', 'd.idarticulo','=','a.idarticulo')
       ->select('a.nombre as articulo','d.cantidad','d.precio_compra','d.precio_venta')
-      ->where('d.ingreso','=',$id)
+      ->where('d.idingreso','=',$id)
       ->get();
     return view("compras.ingreso.show",["ingreso"=>$ingreso,"detalles"=>$detalles]);
   }
