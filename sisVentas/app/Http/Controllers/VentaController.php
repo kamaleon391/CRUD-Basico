@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Input;
 use sisVentas\Http\Requests\VentaFormRequest;
 use sisVentas\Venta;
 use sisVentas\DetalleVenta;
+use DB;
 
 use Carbon\Carbon;
 use Response;
