@@ -15,7 +15,7 @@ class DetalleVenta extends Model
     'idventa',
     'idarticulo',
     'cantidad',
-    'precio_venta'
+    'precio_venta',
     'descuento'
   ];
 
