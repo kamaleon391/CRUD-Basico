@@ -166,7 +166,7 @@
 
 			if(idarticulo!="" && cantidad!="" && cantidad>0 && descuento!="" && precio_venta!="")
 			{
-				if(stock <= cantidad)
+				if(stock >= cantidad)
 				{
 					subtotal[cont]=(cantidad*precio_venta-descuento);
 					total = total+subtotal[cont];
