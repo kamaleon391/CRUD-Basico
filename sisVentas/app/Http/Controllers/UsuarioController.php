@@ -8,7 +8,7 @@ use sisVentas\Http\Requests;
 
 use sisVentas\User;
 use Illuminate\Support\Facades\Redirect;
-use sisVentas\Http\Request\UsuarioFormRequest;
+use sisVentas\Http\Requests\UsuarioFormRequest;
 use DB;
 
 class UsuarioController extends Controller
